@@ -12,6 +12,48 @@ router.get('/', asyncHandler(async (req, res) => {
  res.render('task-list', { title: 'Tasks', tasks });
 }));
 
+router.get('/task/add', csrfProtection, (req, res) => {
+  const task = db.Task.build();
+  res.render('task-add', {
+    title: 'Add Task',
+    task,
+    csrfToken: req.csrfToken(),
+  });
+});
+
+
+router.post('/task/add', csrfProtection, asyncHandler(async (req, res) => {
+  const {
+    title,
+    author,
+    releaseDate,
+    pageCount,
+    publisher,
+  } = req.body;
+
+  const book = db.Book.build({
+    title,
+    author,
+    releaseDate,
+    pageCount,
+    publisher,
+  });
+
+  try {
+    await book.save();
+    res.redirect('/');
+  } catch (err) {
+    res.render('book-add', {
+      title: 'Add Book',
+      book,
+      error: err,
+      csrfToken: req.csrfToken(),
+    });
+  }
+}));
+
+
+
+
+
 module.exports = router;
-
-
