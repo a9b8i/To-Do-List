@@ -24,28 +24,28 @@ router.get('/task/add', csrfProtection, (req, res) => {
 
 router.post('/task/add', csrfProtection, asyncHandler(async (req, res) => {
   const {
-    title,
-    author,
-    releaseDate,
-    pageCount,
-    publisher,
+    taskName,
+    personName,
+    startDate,
+    deadline,
+    hours,
   } = req.body;
 
-  const book = db.Book.build({
-    title,
-    author,
-    releaseDate,
-    pageCount,
-    publisher,
+  const task = db.Task.build({
+    taskName,
+    personName,
+    startDate,
+    deadline,
+    hours,
   });
 
   try {
-    await book.save();
+    await task.save();
     res.redirect('/');
   } catch (err) {
-    res.render('book-add', {
-      title: 'Add Book',
-      book,
+    res.render('task-add', {
+      title: 'Add Task',
+      task,
       error: err,
       csrfToken: req.csrfToken(),
     });
