@@ -1,15 +1,25 @@
 extends layout.pug
 
 block content
-  p Hello from the To Do List app!
-  h3 Tasks
-  ul
-    each task in tasks
-      li= task.taskName
-
-
-
-
-
-
-
+  div(class='py-3')
+    a(class='btn btn-success' href='/task/add' role='button') Add Task
+  table(class='table table-striped table-hover')
+    thead(class='thead-dark')
+      tr
+        th(scope='col') Task
+        th(scope='col') Person
+        th(scope='col') Start Date
+        th(scope='col') Deadline
+        th(scope='col') Hours
+        th(scope='col')
+    tbody
+      each task in tasks
+        tr
+          td= task.taskName
+          td= task.personName
+          td= task.startDate
+          td= task.deadline
+          td= task.hours
+          td
+            a(class='btn btn-primary' href=`/task/edit/${task.id}` role='button') Edit
+            a(class='btn btn-danger ml-2' href=`/task/delete/${task.id}` role='button') Delete
