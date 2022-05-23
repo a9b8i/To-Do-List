@@ -7,7 +7,7 @@ const db = require('./db/models');
 router.get('/', async (req, res, next) => {
   try {
     const tasks = await db.Task.findAll({ order: [['taskName', 'ASC']] });
-    res.render('index', { title: 'Home', tasks });
+    res.render('task-list', { title: 'Tasks', tasks });
   } catch (err) {
     next(err);
   }
