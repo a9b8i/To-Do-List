@@ -1,5 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+
 
 const routes = require('./routes');
 
@@ -7,7 +9,8 @@ const app = express();
 app.use(morgan('dev'));
 
 app.set('view engine', 'pug');
-
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 app.use(routes);
 
 
@@ -39,7 +42,7 @@ app.use((err, req, res, next) => {
   });
 
 
-  
+
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
     const isProduction = process.env.NODE_ENV === 'production';
