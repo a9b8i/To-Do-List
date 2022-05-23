@@ -3,7 +3,7 @@ const csrf = require('csurf');
 
 const router = express.Router();
 const db = require('./db/models');
-
+const csrfProtection = csrf({ cookie: true });
 
 const asyncHandler = (handler) => (req, res, next) => handler(req, res, next).catch(next);
 
