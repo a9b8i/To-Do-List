@@ -22,6 +22,33 @@ router.get('/task/add', csrfProtection, (req, res) => {
   });
 });
 
+const taskValidators = [
+  check('taskName')
+    .exists({ checkFalsy: true })
+    .withMessage('Please provide a value for Task')
+    .isLength({ max: 255 })
+    .withMessage('Task must not be more than 255 characters long'),
+  check('personName')
+    .exists({ checkFalsy: true })
+    .withMessage('Please provide a value for Person')
+    .isLength({ max: 100 })
+    .withMessage('Person must not be more than 100 characters long'),
+  check('startDate')
+    .exists({ checkFalsy: true })
+    .withMessage('Please provide a value for start Date')
+    .isISO8601()
+    .withMessage('Please provide a valid date for start Date'),
+  check('deadline')
+    .exists({ checkFalsy: true })
+    .withMessage('Please provide a value for deadline')
+    .isISO8601()
+    .withMessage('Please provide a valid date for deadline'),
+  check('hours')
+    .exists({ checkFalsy: true })
+    .withMessage('Please provide a value for Page Count')
+    .isInt({ min: 0 })
+    .withMessage('Please provide a valid integer for Page Count'),
+];
 
 
 router.post('/task/add', csrfProtection, asyncHandler(async (req, res, next) => {
@@ -41,21 +68,19 @@ router.post('/task/add', csrfProtection, asyncHandler(async (req, res, next) => 
     hours,
   });
 
-  try {
+  const validatorErrors = validationResult(req);
+
+  if (validatorErrors.isEmpty()) {
     await task.save();
     res.redirect('/');
-  } catch (err) {
-    if (err.name === 'SequelizeValidationError') {
-      const errors = err.errors.map((error) => error.message);
-      res.render('task-add', {
-        title: 'Add Task',
-        task,
-        errors,
-        csrfToken: req.csrfToken(),
-      });
-    } else {
-      next(err);
-    }
+  } else {
+    const errors = validatorErrors.array().map((error) => error.msg);
+    res.render('task-add', {
+      title: 'Add Task',
+      task,
+      errors,
+      csrfToken: req.csrfToken(),
+    });
   }
 }));
 
