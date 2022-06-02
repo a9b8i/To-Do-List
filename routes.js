@@ -24,7 +24,6 @@ router.get('/task/add', csrfProtection, (req, res) => {
 
 
 
-
 router.post('/task/add', csrfProtection, asyncHandler(async (req, res, next) => {
   const {
     taskName,
