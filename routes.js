@@ -51,7 +51,7 @@ const taskValidators = [
 ];
 
 
-router.post('/task/add', csrfProtection, asyncHandler(async (req, res, next) => {
+router.post('/task/add', csrfProtection, taskValidators, asyncHandler(async (req, res, next) => {
   const {
     taskName,
     personName,
