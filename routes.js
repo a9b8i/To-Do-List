@@ -22,7 +22,7 @@ router.get('/task/add', csrfProtection, (req, res) => {
 });
 
 
-router.post('/task/add', csrfProtection, asyncHandler(async (req, res) => {
+router.post('/task/add', csrfProtection, asyncHandler(async (req, res, next) => {
   const {
     taskName,
     personName,
@@ -43,12 +43,17 @@ router.post('/task/add', csrfProtection, asyncHandler(async (req, res) => {
     await task.save();
     res.redirect('/');
   } catch (err) {
-    res.render('task-add', {
-      title: 'Add Task',
-      task,
-      error: err,
-      csrfToken: req.csrfToken(),
-    });
+    if (err.name === 'SequelizeValidationError') {
+      const errors = err.errors.map((error) => error.message);
+      res.render('task-add', {
+        title: 'Add Task',
+        task,
+        errors,
+        csrfToken: req.csrfToken(),
+      });
+    } else {
+      next(err);
+    }
   }
 }));
 
