@@ -141,7 +141,7 @@ router.get('/task/edit/:id(\\d+)', csrfProtection,
   //Route to delete Task
   router.get('/task/delete/:id(\\d+)', csrfProtection, asyncHandler(async (req, res) => {
     const taskId = parseInt(req.params.id, 10);
-    const task = await db.task.findByPk(taskId);
+    const task = await db.Task.findByPk(taskId);
     res.render('task-delete', {
       title: 'Delete Task',
       task,
@@ -149,10 +149,10 @@ router.get('/task/edit/:id(\\d+)', csrfProtection,
     });
   }));
 
-  router.post('/book/delete/:id(\\d+)', csrfProtection, asyncHandler(async (req, res) => {
-    const bookId = parseInt(req.params.id, 10);
-    const book = await db.Book.findByPk(bookId);
-    await book.destroy();
+  router.post('/task/delete/:id(\\d+)', csrfProtection, asyncHandler(async (req, res) => {
+    const taskId = parseInt(req.params.id, 10);
+    const task = await db.Task.findByPk(taskId);
+    await task.destroy();
     res.redirect('/');
   }));
 
