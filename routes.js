@@ -139,13 +139,12 @@ router.get('/task/edit/:id(\\d+)', csrfProtection,
 
 
   //Route to delete Task
-
-  router.get('/book/delete/:id(\\d+)', csrfProtection, asyncHandler(async (req, res) => {
-    const bookId = parseInt(req.params.id, 10);
-    const book = await db.Book.findByPk(bookId);
-    res.render('book-delete', {
-      title: 'Delete Book',
-      book,
+  router.get('/task/delete/:id(\\d+)', csrfProtection, asyncHandler(async (req, res) => {
+    const taskId = parseInt(req.params.id, 10);
+    const task = await db.task.findByPk(taskId);
+    res.render('task-delete', {
+      title: 'Delete Task',
+      task,
       csrfToken: req.csrfToken(),
     });
   }));
