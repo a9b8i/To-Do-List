@@ -136,6 +136,25 @@ router.get('/task/edit/:id(\\d+)', csrfProtection,
       });
     }
   }));
-  
+
+
+  //Route to delete Task
+
+  router.get('/book/delete/:id(\\d+)', csrfProtection, asyncHandler(async (req, res) => {
+    const bookId = parseInt(req.params.id, 10);
+    const book = await db.Book.findByPk(bookId);
+    res.render('book-delete', {
+      title: 'Delete Book',
+      book,
+      csrfToken: req.csrfToken(),
+    });
+  }));
+
+  router.post('/book/delete/:id(\\d+)', csrfProtection, asyncHandler(async (req, res) => {
+    const bookId = parseInt(req.params.id, 10);
+    const book = await db.Book.findByPk(bookId);
+    await book.destroy();
+    res.redirect('/');
+  }));
 
 module.exports = router;
