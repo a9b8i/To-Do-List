@@ -88,9 +88,53 @@ router.post('/task/add', csrfProtection, taskValidators, asyncHandler(async (req
 
 
 //Route for editing task
+router.get('/task/edit/:id(\\d+)', csrfProtection,
+  asyncHandler(async (req, res) => {
+    const taskId = parseInt(req.params.id, 10);
+    const task = await db.Task.findByPk(taskId);
+    res.render('task-edit', {
+      title: 'Edit Task',
+      task,
+      csrfToken: req.csrfToken(),
+    });
+  }));
 
 
+  router.post('/task/edit/:id(\\d+)', csrfProtection, taskValidators,
+  asyncHandler(async (req, res) => {
+    const taskId = parseInt(req.params.id, 10);
+    const taskToUpdate = await db.Task.findByPk(taskId);
 
+    const {
+      taskName,
+      personName,
+      startDate,
+      deadline,
+      hours,
+    } = req.body;
 
+    const task = {
+      taskName,
+      personName,
+      startDate,
+      deadline,
+      hours,
+    };
+
+    const validatorErrors = validationResult(req);
+
+    if (validatorErrors.isEmpty()) {
+      await taskToUpdate.update(task);
+      res.redirect('/');
+    } else {
+      const errors = validatorErrors.array().map((error) => error.msg);
+      res.render('book-edit', {
+        title: 'Edit Task',
+        task: { ...task, id: taskId },
+        errors,
+        csrfToken: req.csrfToken(),
+      });
+    }
+  }));
 
 module.exports = router;
