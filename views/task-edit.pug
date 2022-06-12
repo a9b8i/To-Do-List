@@ -1,0 +1,31 @@
+//- ./views/book-edit.pug
+
+extends layout.pug
+
+block content
+  if errors
+    div(class='alert alert-danger' role='alert')
+      p The following error(s) occurred:
+      ul
+        each error in errors
+          li= error
+  form(action=`/task/edit/${task.id}` method='post')
+    input(type='hidden' name='_csrf' value=csrfToken)
+    div(class='form-group')
+      label(for='taskName') Task
+      input(type='text' id='taskName' name='taskName' value=task.taskName class='form-control')
+    div(class='form-group')
+      label(for='personName') Person
+      input(type='text' id='personName' name='personName' value=task.personName class='form-control')
+    div(class='form-group')
+      label(for='startDate') Start Date
+      input(type='text' id='startDate' name='startDate' value=task.startDate class='form-control' placeholder='ex: 2000-01-31')
+    div(class='form-group')
+      label(for='deadline') Deadline
+      input(type='text' id='deadline' name='deadline' value=task.deadline class='form-control')
+    div(class='form-group')
+      label(for='hours') Hours
+      input(type='text' id='hours' name='hours' value=book.publisher class='form-control')
+    div(class='py-4')
+      button(type='submit' class='btn btn-primary') Update Task
+      a(href='/' class='btn btn-warning ml-2') Cancel
