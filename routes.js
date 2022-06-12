@@ -13,6 +13,8 @@ router.get('/', asyncHandler(async (req, res) => {
  res.render('task-list', { title: 'Tasks', tasks });
 }));
 
+
+//Route for adding a task
 router.get('/task/add', csrfProtection, (req, res) => {
   const task = db.Task.build();
   res.render('task-add', {
@@ -86,6 +88,7 @@ router.post('/task/add', csrfProtection, taskValidators, asyncHandler(async (req
 
 
 //Route for editing task
+
 
 
 
