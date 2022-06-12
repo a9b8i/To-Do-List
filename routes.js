@@ -85,7 +85,6 @@ router.post('/task/add', csrfProtection, taskValidators, asyncHandler(async (req
 }));
 
 
-
 //Route for editing task
 
 
