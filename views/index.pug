@@ -2,3 +2,7 @@ extends layout.pug
 
 block content
   p Hello from the To Do List app!
+  h3 Tasks
+  ul
+    each task in tasks
+      li= task.taskName
