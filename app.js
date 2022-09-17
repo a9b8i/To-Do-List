@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const routes = require('./routes');
 
 const app = express();
+app.use(morgan('dev'));
 
 app.set('view engine', 'pug');
 
