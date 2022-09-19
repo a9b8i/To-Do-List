@@ -13,6 +13,5 @@ app.use(routes);
 
 // Define a port and start listening for connections.
 
-const port = 8080;
+module.exports = app;
 
-app.listen(port, () => console.log(`Listening on port ${port}...`));
